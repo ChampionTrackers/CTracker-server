@@ -2,6 +2,8 @@ import { prisma } from "@/lib/prisma";
 import { FastifyInstance } from "fastify";
 import { ZodTypeProvider } from "fastify-type-provider-zod";
 import z from "zod";
+import { BadRequestError } from "./_errors/BadRequest";
+import { NotFoundError } from "./_errors/NotFound";
 
 export async function getChampionship(app: FastifyInstance) {
     app.withTypeProvider<ZodTypeProvider>().get(
@@ -33,6 +35,14 @@ export async function getChampionship(app: FastifyInstance) {
         async (request, reply) => {
             const { championshipId } = request.params
     
+            const findChampionship = await prisma.championship.findUnique({
+                where: {
+                    id: championshipId
+                }
+            })
+
+            if (findChampionship === null) throw new BadRequestError("This championship don't exist")
+                
             const championship = await prisma.championship.findUnique({
                 select: {
                     id: true,
@@ -56,7 +66,7 @@ export async function getChampionship(app: FastifyInstance) {
             })
     
             if (championship === null) {
-                throw new Error("Championship not found")
+                throw new NotFoundError("Championship not found")
             }
     
             return reply.send({ 

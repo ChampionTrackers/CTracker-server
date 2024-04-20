@@ -10,6 +10,9 @@ export const errorHandler: FastifyErrorHandler = (error, request, reply) => {
             errors: error.flatten().fieldErrors
         })
     }
+
+    const statusCode = error.statusCode ?? 500
+    const message = error.statusCode ? error.message : 'Internal Server Error'
     
-    return reply.status(500).send({ message: 'Internal Server Error' });
+    return reply.status(statusCode).send({ message });
 };

@@ -2,6 +2,7 @@ import { prisma } from '@/lib/prisma'
 import { FastifyInstance } from 'fastify'
 import { ZodTypeProvider } from 'fastify-type-provider-zod'
 import z from 'zod'
+import { BadRequestError } from './_errors/BadRequest'
 
 export async function createTeam(app: FastifyInstance) {
     app.withTypeProvider<ZodTypeProvider>().post(
@@ -27,6 +28,15 @@ export async function createTeam(app: FastifyInstance) {
         async (request, reply) => {
             const { userId, name, picture, description, maxPlayers } =
                 request.body
+
+            const user = await prisma.user.findUnique({
+                where: {
+                    id: userId,
+                },
+            })
+
+            if (user === null)
+                throw new BadRequestError("This user doesn't exist")
 
             const team = await prisma.team.create({
                 data: {

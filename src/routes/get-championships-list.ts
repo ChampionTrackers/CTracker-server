@@ -2,6 +2,7 @@ import { prisma } from '@/lib/prisma'
 import { FastifyInstance } from 'fastify'
 import { ZodTypeProvider } from 'fastify-type-provider-zod'
 import z from 'zod'
+import { NotFoundError } from './_errors/NotFound'
 
 export async function getChampionshipsList(app: FastifyInstance) {
     app.withTypeProvider<ZodTypeProvider>().get(
@@ -67,8 +68,6 @@ export async function getChampionshipsList(app: FastifyInstance) {
                     createdAt: 'desc',
                 },
             })
-
-            console.log(championships)
 
             return reply.send({
                 championships: championships.map((championship) => {

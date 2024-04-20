@@ -3,6 +3,7 @@ import { ZodTypeProvider } from 'fastify-type-provider-zod'
 import z from 'zod'
 import { prisma } from '../lib/prisma'
 import { generateHash } from '../utils/hash'
+import { BadRequestError } from './_errors/BadRequest'
 
 export async function createUser(app: FastifyInstance) {
     app.withTypeProvider<ZodTypeProvider>().post(
@@ -41,9 +42,9 @@ export async function createUser(app: FastifyInstance) {
                 }),
             ])
 
-            if (findEmail !== null) throw new Error('Email already exists')
+            if (findEmail !== null) throw new BadRequestError('Email already exists')
             if (findNickname !== null)
-                throw new Error('Nickname already exists')
+                throw new BadRequestError('Nickname already exists')
 
             const hash = await generateHash(password)
             const user = await prisma.user.create({
