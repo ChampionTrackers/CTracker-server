@@ -3,25 +3,23 @@
 	CTracker Backend
 </h1>
 
-- [⚙️ Requisitos](#️-requisitos)
-  - [🔨 Requisitos Funcionais](#-requisitos-funcionais)
-  - [📋 Regras de Negócio](#-regras-de-negócio)
-- [🚀 Como executar o projeto](#-como-executar-o-projeto)
-
-
+[![Insomnia Badge](https://img.shields.io/badge/Try_On_Insomnia-5849be?style=for-the-badge&logo=Insomnia&logoColor=white)](./.github/Insomnia.json)
 
 ## ⚙️ Requisitos
 
 ### 🔨 Requisitos Funcionais
 
 - [x] O usuário deve poder se cadastrar
-- [ ] O usuário deve poder se autenticar
+- [x] O usuário deve poder se autenticar
 - [x] O usuário deve poder visualizar a lista de campeonatos
 - [x] O usuário deve poder visualizar o campeonato
 - [x] O usuário deve poder visualizar o seu perfil
-- [ ] O usuário deve poder visualizar as equipes do campeonato
+- [x] O usuário deve poder visualizar as equipes do campeonato
 - [ ] O usuário deve poder visualizar as partidas que ocorreram do campeonato
 - [ ] O usuário deve poder visualizar o histórico de pontos das equipes
+- [ ] O usuário deve conseguir realizar um palpite
+- [ ] O usuário deve conseguir visualizar seus palpites
+- [ ] O usuário deve conseguir visualizar a pontuação dos seus palpites
 
 - [x] O organizador deve poder criar um campeonato
 - [x] O organizador deve poder criar uma equipe
