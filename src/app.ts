@@ -34,6 +34,7 @@ app.register(fastifySwagger, {
                 type: 'apiKey',
                 name: 'Authorization',
                 in: 'header',
+                description: 'Para acessar as rotas protegidas, você deve enviar o token JWT no cabeçalho da requisição. O token deve ser precedido pela palavra "Bearer".\n**Exemplo:** Bearer TOKEN_JWT_AQUI'
             },
         },
     },
