@@ -1,9 +1,9 @@
 import { FastifyInstance } from 'fastify'
 import { ZodTypeProvider } from 'fastify-type-provider-zod'
 import z from 'zod'
-import { prisma } from '../lib/prisma'
-import { generateHash } from '../utils/hash'
-import { BadRequestError } from './_errors/BadRequest'
+import { prisma } from '../../lib/prisma'
+import { generateHash } from '../../utils/hash'
+import { BadRequestError } from '../_errors/BadRequest'
 
 export async function createUser(app: FastifyInstance) {
     app.withTypeProvider<ZodTypeProvider>().post(
@@ -11,7 +11,7 @@ export async function createUser(app: FastifyInstance) {
         {
             schema: {
                 summary: 'Create an user',
-                tags: ['User'],
+                tags: ['Auth'],
                 body: z.object({
                     email: z.string().email(),
                     password: z.string(),
