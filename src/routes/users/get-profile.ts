@@ -3,15 +3,17 @@ import { FastifyInstance } from 'fastify'
 import { ZodTypeProvider } from 'fastify-type-provider-zod'
 import z from 'zod'
 import { NotFoundError } from '../_errors/NotFound'
+import { verifyJwt } from '@/middlewares/verifyJWT'
 
 export async function getProfile(app: FastifyInstance) {
     app.withTypeProvider<ZodTypeProvider>().get(
         '/profile',
         {
-            preHandler: [app.authenticate],
+            onRequest: [verifyJwt],
             schema: {
                 summary: 'Get your profile',
                 tags: ['User'],
+                security: [{ JWT: [] }],
                 response: {
                     200: z.object({
                         user: z.object({
@@ -25,6 +27,7 @@ export async function getProfile(app: FastifyInstance) {
                     }),
                 },
             },
+            
         },
         async (request, reply) => {
             const { id } = request.user
