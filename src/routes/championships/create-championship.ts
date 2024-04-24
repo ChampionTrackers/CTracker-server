@@ -3,16 +3,19 @@ import { FastifyInstance } from 'fastify'
 import { ZodTypeProvider } from 'fastify-type-provider-zod'
 import z from 'zod'
 import { BadRequestError } from '../_errors/BadRequest'
+import { verifyJwt } from '@/middlewares/verifyJWT'
+import { NotFoundError } from '../_errors/NotFound'
 
 export async function createChampionship(app: FastifyInstance) {
     app.withTypeProvider<ZodTypeProvider>().post(
         '/championships',
         {
+            onRequest: (request, reply) => verifyJwt(request, reply),
             schema: {
                 summary: 'Create a championship',
                 tags: ['Championship'],
+                security: [{JWT: []}],
                 body: z.object({
-                    userId: z.number().int(),
                     name: z.string().min(3),
                     picture: z.string().url().nullable(),
                     description: z.string().min(3),
@@ -27,8 +30,8 @@ export async function createChampionship(app: FastifyInstance) {
             },
         },
         async (request, reply) => {
-            const { userId, name, picture, description, type, game } =
-                request.body
+            const userId = request.user.id
+            const { name, picture, description, type, game } = request.body
 
             const user = await prisma.user.findUnique({
                 where: {
@@ -37,7 +40,7 @@ export async function createChampionship(app: FastifyInstance) {
             })
 
             if (user === null)
-                throw new BadRequestError("This user doesn't exist")
+                throw new NotFoundError("This user doesn't exist")
 
             const championship = await prisma.championship.create({
                 data: {
