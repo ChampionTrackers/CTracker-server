@@ -16,6 +16,7 @@ import { createTeam } from './routes/teams/create-team'
 import { authenticateWithEmail } from './routes/users/authenticate-with-email'
 import { createUser } from './routes/users/create-user'
 import { getProfile } from './routes/users/get-profile'
+import { addTeamToChampionship } from './routes/championships/add-team-to-championship'
 
 const app = fastify()
 
@@ -60,6 +61,7 @@ app.register(getProfile, { prefix: '/v1' })
 app.register(createTeam, { prefix: '/v1' })
 
 app.register(createChampionship, { prefix: '/v1' })
+app.register(addTeamToChampionship, { prefix: '/v1' })
 app.register(getChampionship, { prefix: '/v1' })
 app.register(getChampionshipsList, { prefix: '/v1' })
 app.register(getChampionshipTeams, { prefix: '/v1' })
