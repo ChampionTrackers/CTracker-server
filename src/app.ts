@@ -17,6 +17,7 @@ import { authenticateWithEmail } from './routes/users/authenticate-with-email'
 import { createUser } from './routes/users/create-user'
 import { getProfile } from './routes/users/get-profile'
 import { addTeamToChampionship } from './routes/championships/add-team-to-championship'
+import { env } from './env'
 
 const app = fastify()
 
@@ -47,7 +48,7 @@ app.register(fastifySwaggerUi, {
 })
 
 app.register(fastifyJwt, {
-    secret: process.env.SECRET_KEY!,
+    secret: env.JWT_SECRET,
 })
 
 app.setValidatorCompiler(validatorCompiler)
