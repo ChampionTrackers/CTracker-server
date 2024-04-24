@@ -6,10 +6,12 @@
     "dev": "tsx watch --env-file .env src/server.ts",
     "build": "tsup src --format esm",
     "start": "node dist/server.mjs",
+    "deploy": "npm run db:deploy && npm run build",
     "db:migrate": "prisma migrate dev",
     "db:studio": "prisma studio",
     "db:seed": "prisma db seed",
-    "db:deploy": "prisma migrate deploy && prisma generate"
+    "db:deploy": "prisma migrate deploy && prisma generate",
+    "lets-code": "docker compose up -d && npm run dev"
   },
   "engines": {
     "node": ">=20.12.2"
