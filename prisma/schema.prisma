@@ -23,6 +23,7 @@ model User {
   score        Int            @default(0) @map("user_score")
   Team         Team[]
   Championship Championship[]
+  Guess        Guess[]
 
   @@map("tb_user")
 }
@@ -32,13 +33,14 @@ model Team {
   userId      Int     @map("user_iduser")
   name        String  @map("team_name")
   picture     String? @map("team_picture")
-  description String?  @map("team_description")
+  description String? @map("team_description")
   maxPlayers  Int     @map("team_maxPlayers")
   score       Int     @default(0) @map("team_score")
 
   user             User               @relation(fields: [userId], references: [id], onDelete: Restrict)
   TeamChampionship TeamChampionship[]
   TeamScore        TeamScore[]
+  Guess            Guess[]
 
   @@map("tb_team")
 }
@@ -76,14 +78,30 @@ model TeamChampionship {
 }
 
 model Match {
-  id             Int      @id @default(autoincrement()) @map("mat_idmatch")
-  championshipId Int      @map("cha_idchampionship")
-  date           DateTime @default(now()) @map("mat_date")
+  id               Int         @id @default(autoincrement()) @map("mat_idmatch")
+  championshipId   Int         @map("cha_idchampionship")
+  plannedStartTime DateTime    @default(now()) @map("mat_planned_start_time")
+  status           MatchStatus @default(SCHEDULED) @map("mat_status")
 
   championship Championship @relation(fields: [championshipId], references: [id])
   TeamScore    TeamScore[]
+  Guess        Guess[]
 
   @@map("tb_match")
+}
+
+model Guess {
+  id      Int          @id @default(autoincrement()) @map("guess_id")
+  userId  Int          @map("user_iduser")
+  matchId Int          @map("mat_idmatch")
+  outcome GuessOutcome
+
+  user   User  @relation(fields: [userId], references: [id], onDelete: Restrict)
+  match  Match @relation(fields: [matchId], references: [id], onDelete: Restrict)
+  Team   Team? @relation(fields: [teamId], references: [id])
+  teamId Int?
+
+  @@map("tb_guess")
 }
 
 model TeamScore {
@@ -106,4 +124,17 @@ enum ChampionshipType {
 enum ChampionshipStatus {
   ACTIVE
   INACTIVE
+}
+
+enum MatchStatus {
+  SCHEDULED
+  RUNNING
+  COMPLETED
+}
+
+enum GuessOutcome {
+  TEAM1_WIN
+  TEAM2_WIN
+  DRAW
+  CANCELLED
 }
