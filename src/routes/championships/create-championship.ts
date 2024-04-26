@@ -16,7 +16,7 @@ export async function createChampionship(app: FastifyInstance) {
                 tags: ['Championship'],
                 security: [{JWT: []}],
                 body: z.object({
-                    name: z.string().min(3),
+                    name: z.string().min(3).max(40),
                     picture: z.string().url().nullable(),
                     description: z.string().min(3),
                     type: z.enum(['PHYSICAL', 'VIRTUAL']),

@@ -13,7 +13,7 @@ export async function createTeam(app: FastifyInstance) {
                 tags: ['Team'],
                 body: z.object({
                     userId: z.number().int(),
-                    name: z.string().min(3),
+                    name: z.string().min(3).max(30),
                     picture: z.string().url().nullable(),
                     description: z.string(),
                     maxPlayers: z.number().int(),
