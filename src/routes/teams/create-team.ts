@@ -3,16 +3,19 @@ import { FastifyInstance } from 'fastify'
 import { ZodTypeProvider } from 'fastify-type-provider-zod'
 import z from 'zod'
 import { BadRequestError } from '../_errors/BadRequest'
+import { verifyJwt } from '@/middlewares/verifyJWT'
+import { NotFoundError } from '../_errors/NotFound'
 
 export async function createTeam(app: FastifyInstance) {
     app.withTypeProvider<ZodTypeProvider>().post(
         '/teams',
         {
+            onRequest: (request, reply) => verifyJwt(request, reply),
             schema: {
                 summary: 'Create a team',
                 tags: ['Team'],
+                security: [{JWT: []}],
                 body: z.object({
-                    userId: z.number().int(),
                     name: z.string().min(3).max(30),
                     picture: z.string().url().nullable(),
                     description: z.string(),
@@ -26,9 +29,11 @@ export async function createTeam(app: FastifyInstance) {
             },
         },
         async (request, reply) => {
-            const { userId, name, picture, description, maxPlayers } =
+            const { name, picture, description, maxPlayers } =
                 request.body
 
+            const userId = request.user.id
+            
             const user = await prisma.user.findUnique({
                 where: {
                     id: userId,
