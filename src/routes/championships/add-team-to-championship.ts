@@ -6,6 +6,7 @@ import z from 'zod';
 import { BadRequestError } from '../_errors/BadRequest';
 import { NotFoundError } from '../_errors/NotFound';
 import { UnauthorizedError } from '../_errors/Unauthorized';
+import { ConflictError } from '../_errors/Conflict';
 
 export async function addTeamToChampionship(app: FastifyInstance) {
     app.withTypeProvider<ZodTypeProvider>().post(
@@ -73,7 +74,7 @@ export async function addTeamToChampionship(app: FastifyInstance) {
                     "You don't have permission to add a team to this championship"
                 );
             if (findTeamInChampionship)
-                throw new BadRequestError(
+                throw new ConflictError(
                     'This team is already in this championship'
                 );
 

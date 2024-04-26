@@ -36,7 +36,7 @@ export async function createTeam(app: FastifyInstance) {
             })
 
             if (user === null)
-                throw new BadRequestError("This user doesn't exist")
+                throw new NotFoundError("This user doesn't exist")
 
             const team = await prisma.team.create({
                 data: {
