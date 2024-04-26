@@ -25,7 +25,7 @@
 - [x] O organizador deve poder criar uma equipe
 - [ ] O organizador deve poder criar um jogador
 - [ ] O organizador deve poder adicionar jogadores nas suas equipes
-- [ ] O organizador deve poder adicionar equipes no campeonato
+- [x] O organizador deve poder adicionar equipes no campeonato
 
 ### 📋 Regras de Negócio
 
