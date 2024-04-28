@@ -18,6 +18,7 @@ import { createUser } from './routes/users/create-user'
 import { getProfile } from './routes/users/get-profile'
 import { addTeamToChampionship } from './routes/championships/add-team-to-championship'
 import { env } from './env'
+import { editUser } from './routes/users/edit-user'
 
 const app = fastify()
 
@@ -56,6 +57,7 @@ app.setSerializerCompiler(serializerCompiler)
 
 app.register(createUser, { prefix: '/v1' })
 // app.register(getUser, { prefix: '/v1' })
+app.register(editUser, { prefix: '/v1' })
 app.register(authenticateWithEmail, { prefix: '/v1' })
 app.register(getProfile, { prefix: '/v1' })
 
