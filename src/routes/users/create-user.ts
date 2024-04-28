@@ -15,7 +15,7 @@ export async function createUser(app: FastifyInstance) {
                 tags: ['Auth'],
                 body: z.object({
                     email: z.string().email(),
-                    password: z.string(),
+                    password: z.string().min(8),
                     name: z.string().min(3).max(50),
                     nickname: z.string().min(3).max(20),
                     picture: z.string().url().nullable(),
