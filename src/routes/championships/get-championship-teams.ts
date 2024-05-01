@@ -40,7 +40,7 @@ export async function getChampionshipTeams(app: FastifyInstance) {
                 }
             })
 
-            if (findChampionship === null) throw new BadRequestError("This championship don't exist")
+            if (findChampionship === null) throw new NotFoundError("This championship don't exist")
 
             const teams = await prisma.teamChampionship.findMany({
                 select: {

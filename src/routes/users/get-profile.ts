@@ -7,7 +7,7 @@ import { verifyJwt } from '@/middlewares/verifyJWT'
 
 export async function getProfile(app: FastifyInstance) {
     app.withTypeProvider<ZodTypeProvider>().get(
-        '/profile',
+        '/users',
         {
             onRequest: [verifyJwt],
             schema: {
@@ -17,7 +17,6 @@ export async function getProfile(app: FastifyInstance) {
                 response: {
                     200: z.object({
                         user: z.object({
-                            id: z.number().int(),
                             email: z.string().email(),
                             name: z.string(),
                             nickname: z.string(),
@@ -34,7 +33,6 @@ export async function getProfile(app: FastifyInstance) {
 
             const user = await prisma.user.findUnique({
                 select: {
-                    id: true,
                     email: true,
                     name: true,
                     nickname: true,
@@ -51,7 +49,6 @@ export async function getProfile(app: FastifyInstance) {
             }
 
             return reply.send({ user: {
-                id: user.id,
                 email: user.email,
                 name: user.name,
                 nickname: user.nickname,

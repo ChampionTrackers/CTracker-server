@@ -34,15 +34,7 @@ export async function getChampionship(app: FastifyInstance) {
         },
         async (request, reply) => {
             const { championshipId } = request.params
-    
-            const findChampionship = await prisma.championship.findUnique({
-                where: {
-                    id: championshipId
-                }
-            })
-
-            if (findChampionship === null) throw new BadRequestError("This championship don't exist")
-                
+                    
             const championship = await prisma.championship.findUnique({
                 select: {
                     id: true,

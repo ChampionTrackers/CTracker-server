@@ -6,10 +6,12 @@
     "dev": "tsx watch --env-file .env src/server.ts",
     "build": "tsup src --format esm",
     "start": "node dist/server.mjs",
+    "deploy": "npm run db:deploy && npm run build",
     "db:migrate": "prisma migrate dev",
     "db:studio": "prisma studio",
     "db:seed": "prisma db seed",
-    "db:deploy": "prisma migrate deploy && prisma generate"
+    "db:deploy": "prisma migrate deploy && prisma generate",
+    "lets-code": "docker compose up -d && npm run dev"
   },
   "engines": {
     "node": ">=20.12.2"
@@ -25,7 +27,7 @@
     "@types/bcrypt": "^5.0.2",
     "@types/node": "^20.12.7",
     "@types/supertest": "^6.0.2",
-    "prisma": "^5.12.1",
+    "prisma": "^5.13.0",
     "supertest": "^6.3.4",
     "tsc": "^2.0.4",
     "tsup": "^8.0.2",
@@ -39,7 +41,7 @@
     "@fastify/jwt": "^8.0.0",
     "@fastify/swagger": "^8.14.0",
     "@fastify/swagger-ui": "^3.0.0",
-    "@prisma/client": "^5.12.1",
+    "@prisma/client": "^5.13.0",
     "bcrypt": "^5.1.1",
     "fastify": "^4.26.2",
     "fastify-plugin": "^4.5.1",

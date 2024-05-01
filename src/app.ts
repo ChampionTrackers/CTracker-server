@@ -16,6 +16,9 @@ import { createTeam } from './routes/teams/create-team'
 import { authenticateWithEmail } from './routes/users/authenticate-with-email'
 import { createUser } from './routes/users/create-user'
 import { getProfile } from './routes/users/get-profile'
+import { addTeamToChampionship } from './routes/championships/add-team-to-championship'
+import { env } from './env'
+import { editUser } from './routes/users/edit-user'
 
 const app = fastify()
 
@@ -46,7 +49,7 @@ app.register(fastifySwaggerUi, {
 })
 
 app.register(fastifyJwt, {
-    secret: process.env.SECRET_KEY!,
+    secret: env.JWT_SECRET,
 })
 
 app.setValidatorCompiler(validatorCompiler)
@@ -54,12 +57,14 @@ app.setSerializerCompiler(serializerCompiler)
 
 app.register(createUser, { prefix: '/v1' })
 // app.register(getUser, { prefix: '/v1' })
+app.register(editUser, { prefix: '/v1' })
 app.register(authenticateWithEmail, { prefix: '/v1' })
 app.register(getProfile, { prefix: '/v1' })
 
 app.register(createTeam, { prefix: '/v1' })
 
 app.register(createChampionship, { prefix: '/v1' })
+app.register(addTeamToChampionship, { prefix: '/v1' })
 app.register(getChampionship, { prefix: '/v1' })
 app.register(getChampionshipsList, { prefix: '/v1' })
 app.register(getChampionshipTeams, { prefix: '/v1' })
