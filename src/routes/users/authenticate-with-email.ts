@@ -40,7 +40,7 @@ export async function authenticateWithEmail(app: FastifyInstance) {
             if (!passwordCompare)
                 throw new UnauthorizedError('Invalid Credentials')
 
-            const token = await reply.jwtSign({ id: user.id })
+            const token = await reply.jwtSign({ id: user.id, email: user.email, nickname: user.nickname})
 
             reply.status(200).send({ token })
         }
