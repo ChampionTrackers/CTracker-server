@@ -40,7 +40,7 @@ export async function editUser(app: FastifyInstance){
       }
     })
 
-    return reply.send()
+    return reply.status(204).send();
     
   })
 }

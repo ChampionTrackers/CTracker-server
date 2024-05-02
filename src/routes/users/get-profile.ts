@@ -16,13 +16,11 @@ export async function getProfile(app: FastifyInstance) {
                 security: [{ JWT: [] }],
                 response: {
                     200: z.object({
-                        user: z.object({
                             email: z.string().email(),
                             name: z.string(),
                             nickname: z.string(),
                             picture: z.string().url().nullable(),
                             score: z.number().int(),
-                        })
                     }),
                 },
             },
@@ -48,13 +46,13 @@ export async function getProfile(app: FastifyInstance) {
                 throw new NotFoundError("User not found")
             }
 
-            return reply.send({ user: {
+            return reply.send({
                 email: user.email,
                 name: user.name,
                 nickname: user.nickname,
                 picture: user.picture,
                 score: user.score
-            } })
+            })
         }
     )
 }
