@@ -2,6 +2,15 @@ name: Lock Issues and PRs
 on:
   schedule:
     - cron: '0 0 * * *'
+
+permissions:
+  issues: write
+  pull-requests: write
+  discussions: write
+
+concurrency:
+  group: lock-threads
+  
 jobs:
   lock:
     runs-on: ubuntu-latest
