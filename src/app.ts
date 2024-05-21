@@ -20,6 +20,7 @@ import { getProfile } from './routes/users/get-profile';
 import { addTeamToChampionship } from './routes/championships/add-team-to-championship';
 import { env } from './env';
 import { editUser } from './routes/users/edit-user';
+import { changePassword } from './routes/users/change-password';
 
 const app = fastify();
 
@@ -79,6 +80,7 @@ app.setSerializerCompiler(serializerCompiler);
 
 app.register(createUser, { prefix: '/v1' });
 app.register(editUser, { prefix: '/v1' });
+app.register(changePassword, { prefix: '/v1' });
 app.register(authenticateWithEmail, { prefix: '/v1' });
 app.register(getProfile, { prefix: '/v1' });
 
