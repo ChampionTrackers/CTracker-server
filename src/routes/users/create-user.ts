@@ -8,7 +8,7 @@ import { ConflictError } from '../_errors/Conflict'
 
 export async function createUser(app: FastifyInstance) {
     app.withTypeProvider<ZodTypeProvider>().post(
-        '/signup',
+        '/users',
         {
             schema: {
                 summary: 'Create an user',
@@ -17,13 +17,11 @@ export async function createUser(app: FastifyInstance) {
                     email: z.string().email(),
                     password: z.string().min(8),
                     name: z.string().min(3).max(50),
-                    nickname: z.string().min(3).max(20),
+                    nickname: z.string().min(3).max(20).refine(string => !string.includes(' '), 'Nickname should not have spaces'),
                     picture: z.string().url().nullable(),
                 }),
                 response: {
-                    201: z.object({
-                        userId: z.number(),
-                    }),
+                    201: z.null(),
                 },
             },
         },
@@ -58,7 +56,7 @@ export async function createUser(app: FastifyInstance) {
                 },
             })
 
-            return reply.status(201).send({ userId: user.id })
+            return reply.status(201).send()
         }
     )
 }

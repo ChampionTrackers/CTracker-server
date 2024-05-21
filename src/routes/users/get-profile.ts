@@ -7,12 +7,12 @@ import { verifyJwt } from '@/middlewares/verifyJWT'
 
 export async function getProfile(app: FastifyInstance) {
     app.withTypeProvider<ZodTypeProvider>().get(
-        '/users',
+        '/profile',
         {
             onRequest: [verifyJwt],
             schema: {
                 summary: 'Get your profile',
-                tags: ['User'],
+                tags: ['Auth'],
                 security: [{ JWT: [] }],
                 response: {
                     200: z.object({

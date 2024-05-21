@@ -42,12 +42,32 @@ app.register(fastifySwagger, {
         },
       },
     },
+    tags: [
+      {
+        name: 'Auth',
+        description:
+          'Endpoints relacionados à autenticação e gerenciamento de usuários. Inclui operações como login, registro, recuperação de senha (WIP) e verificação de identidade.',
+      },
+      {
+        name: 'Team',
+        description:
+          'Endpoints relacionados à gestão de equipes. Inclui operações para criação, atualização, exclusão e listagem de equipes, bem como a gestão de jogadores da equipe.',
+      },
+      {
+        name: 'Championship',
+        description:
+          'Endpoints relacionados à organização e gerenciamento de campeonatos. Inclui operações para criação, atualização, exclusão e listagem de campeonatos, bem como a gestão de participantes e resultados.',
+      },
+    ],
   },
   transform: jsonSchemaTransform,
 });
 
 app.register(require('@scalar/fastify-api-reference'), {
   routePrefix: '/docs',
+  configuration: {
+    theme: 'bluePlanet',
+  },
 });
 
 app.register(fastifyJwt, {
@@ -58,7 +78,6 @@ app.setValidatorCompiler(validatorCompiler);
 app.setSerializerCompiler(serializerCompiler);
 
 app.register(createUser, { prefix: '/v1' });
-// app.register(getUser, { prefix: '/v1' })
 app.register(editUser, { prefix: '/v1' });
 app.register(authenticateWithEmail, { prefix: '/v1' });
 app.register(getProfile, { prefix: '/v1' });
