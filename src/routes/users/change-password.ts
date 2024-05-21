@@ -7,8 +7,8 @@ import { NotFoundError } from '../_errors/NotFound';
 import { verifyJwt } from '@/middlewares/verifyJWT';
 
 export async function changePassword(app: FastifyInstance) {
-  app.withTypeProvider<ZodTypeProvider>().patch(
-    '/users/change-password',
+  app.withTypeProvider<ZodTypeProvider>().put(
+    '/password/change',
     {
       onRequest: (request, reply) => verifyJwt(request, reply),
       schema: {
