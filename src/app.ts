@@ -1,6 +1,7 @@
 import fastifyJwt from '@fastify/jwt';
 import fastifySwagger from '@fastify/swagger';
 import fastifySwaggerUi from '@fastify/swagger-ui';
+import ScalarApiReference from '@scalar/fastify-api-reference'
 
 import fastify from 'fastify';
 import {
@@ -64,7 +65,7 @@ app.register(fastifySwagger, {
   transform: jsonSchemaTransform,
 });
 
-app.register(require('@scalar/fastify-api-reference'), {
+app.register(ScalarApiReference, {
   routePrefix: '/docs',
   configuration: {
     theme: 'bluePlanet',
