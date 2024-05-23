@@ -7,7 +7,7 @@ import { compareHash } from '@/utils/hash'
 
 export async function authenticateWithEmail(app: FastifyInstance) {
     app.withTypeProvider<ZodTypeProvider>().post(
-        '/login',
+        '/sessions/password',
         {
             schema: {
                 summary: 'Authenticate an user with Email',
