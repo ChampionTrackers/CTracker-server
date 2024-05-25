@@ -1,14 +1,14 @@
 import fastifyJwt from '@fastify/jwt';
 import fastifySwagger from '@fastify/swagger';
-import fastifySwaggerUi from '@fastify/swagger-ui';
-import ScalarApiReference from '@scalar/fastify-api-reference'
-
+import ScalarApiReference from '@scalar/fastify-api-reference';
+import fastifyCors from '@fastify/cors';
 import fastify from 'fastify';
 import {
   jsonSchemaTransform,
   serializerCompiler,
   validatorCompiler,
 } from 'fastify-type-provider-zod';
+
 import { errorHandler } from './helpers/error-handler';
 import { createChampionship } from './routes/championships/create-championship';
 import { getChampionship } from './routes/championships/get-championship';
@@ -24,6 +24,10 @@ import { editUser } from './routes/users/edit-user';
 import { changePassword } from './routes/users/change-password';
 
 const app = fastify();
+
+app.register(fastifyCors, {
+  origin: '*',
+});
 
 app.register(fastifySwagger, {
   openapi: {
