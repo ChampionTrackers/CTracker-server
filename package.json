@@ -11,7 +11,10 @@
     "db:studio": "prisma studio",
     "db:seed": "prisma db seed",
     "db:deploy": "prisma migrate deploy && prisma generate",
-    "lets-code": "docker compose up -d && npm run dev"
+    "lets-code": "docker compose up -d && npm run dev",
+    "test:e2e": "vitest run --dir src/routes",
+    "test:coverage": "vitest run --coverage",
+    "test:ui": "vitest --ui"
   },
   "engines": {
     "node": ">=16 <22"
@@ -24,17 +27,19 @@
   "license": "ISC",
   "devDependencies": {
     "@faker-js/faker": "^8.4.1",
+    "@testcontainers/postgresql": "^10.9.0",
     "@types/bcrypt": "^5.0.2",
     "@types/node": "^20.12.7",
     "@types/supertest": "^6.0.2",
     "prisma": "^5.13.0",
-    "testcontainers": "^10.9.0",
+    "supertest": "^7.0.0",
     "tsc": "^2.0.4",
     "tsup": "^8.0.2",
     "tsx": "^4.7.2",
     "typescript": "^5.4.5",
     "vite-tsconfig-paths": "^4.3.2",
-    "vitest": "^1.6.0"
+    "vitest": "^1.6.0",
+    "vitest-environment-prisma": "^0.4.2"
   },
   "dependencies": {
     "@fastify/cookie": "^9.3.1",
@@ -49,7 +54,6 @@
     "fastify": "^4.26.2",
     "fastify-plugin": "^4.5.1",
     "fastify-type-provider-zod": "^1.1.9",
-    "supertest": "^7.0.0",
     "zod": "^3.22.4"
   }
 }
