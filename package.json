@@ -47,7 +47,7 @@
     "@fastify/jwt": "^8.0.0",
     "@fastify/swagger": "^8.14.0",
     "@fastify/swagger-ui": "^3.0.0",
-    "@prisma/client": "^5.13.0",
+    "@prisma/client": "^5.14.0",
     "@scalar/fastify-api-reference": "^1.22.52",
     "bcrypt": "^5.1.1",
     "dotenv": "^16.4.5",
