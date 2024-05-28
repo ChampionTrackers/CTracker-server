@@ -35,9 +35,7 @@ export async function editUser(app: FastifyInstance) {
           password: z.string().min(8),
         }),
         response: {
-          200: z.object({
-            token: z.string(),
-          }),
+          204: z.null(),
         },
       },
     },
@@ -99,19 +97,7 @@ export async function editUser(app: FastifyInstance) {
         data,
       });
 
-      const newUser = await prisma.user.findUnique({
-        where: {
-          id: userId,
-        },
-      });
-
-      const token = await reply.jwtSign({
-        id: newUser!.id,
-        email: newUser!.email,
-        nickname: newUser!.nickname,
-      });
-
-      return reply.status(200).send({ token });
+      return reply.status(204).send();
     }
   );
 }
