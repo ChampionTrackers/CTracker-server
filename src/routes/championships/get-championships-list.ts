@@ -13,7 +13,8 @@ export async function getChampionshipsList(app: FastifyInstance) {
         tags: ['Championship'],
         querystring: z.object({
           query: z.string().nullish(),
-          pageIndex: z.string().nullish().default('0').transform(Number),
+          page: z.string().nullish().default('0').transform(Number),
+          pageSize: z.string().nullish().default('10').transform(Number),
         }),
         response: {
           200: z.array(
@@ -31,7 +32,7 @@ export async function getChampionshipsList(app: FastifyInstance) {
       },
     },
     async (request, reply) => {
-      const { query, pageIndex } = request.query;
+      const { query, page, pageSize } = request.query;
 
       const championships = await prisma.championship.findMany({
         select: {
@@ -56,8 +57,8 @@ export async function getChampionshipsList(app: FastifyInstance) {
               },
             }
           : {},
-        skip: pageIndex * 10,
-        take: 10,
+        skip: page * pageSize,
+        take: pageSize,
         orderBy: {
           createdAt: 'desc',
         },
