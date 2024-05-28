@@ -5,11 +5,11 @@ updates:
     schedule:
       interval: "daily"
     commit-message:
-      prefix: "⬆️"
+      prefix: "⬆️ "
 
   - package-ecosystem: "docker"
     directory: "/"
     schedule:
       interval: "weekly"
     commit-message:
-      prefix: "⬆️"
+      prefix: "⬆️ "
