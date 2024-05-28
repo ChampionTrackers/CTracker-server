@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "dev": "tsx watch --env-file .env src/server.ts",
+    "dev": "tsx watch src/server.ts",
     "build": "tsup src --format esm",
     "start": "node dist/server.mjs",
     "deploy": "npm run db:deploy && npm run build",
@@ -11,10 +11,13 @@
     "db:studio": "prisma studio",
     "db:seed": "prisma db seed",
     "db:deploy": "prisma migrate deploy && prisma generate",
-    "lets-code": "docker compose up -d && npm run dev"
+    "lets-code": "docker compose up -d && npm run dev",
+    "test:e2e": "vitest run --dir src/routes",
+    "test:coverage": "vitest run --coverage",
+    "test:ui": "vitest --ui"
   },
   "engines": {
-    "node": ">=20.12.2"
+    "node": ">=16 <22"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"
@@ -24,14 +27,19 @@
   "license": "ISC",
   "devDependencies": {
     "@faker-js/faker": "^8.4.1",
+    "@testcontainers/postgresql": "^10.9.0",
     "@types/bcrypt": "^5.0.2",
     "@types/node": "^20.12.7",
     "@types/supertest": "^6.0.2",
     "prisma": "^5.13.0",
+    "supertest": "^7.0.0",
     "tsc": "^2.0.4",
     "tsup": "^8.0.2",
     "tsx": "^4.7.2",
-    "typescript": "^5.4.5"
+    "typescript": "^5.4.5",
+    "vite-tsconfig-paths": "^4.3.2",
+    "vitest": "^1.6.0",
+    "vitest-environment-prisma": "^0.4.2"
   },
   "dependencies": {
     "@fastify/cookie": "^9.3.1",
@@ -42,6 +50,7 @@
     "@prisma/client": "^5.13.0",
     "@scalar/fastify-api-reference": "^1.22.43",
     "bcrypt": "^5.1.1",
+    "dotenv": "^16.4.5",
     "fastify": "^4.26.2",
     "fastify-plugin": "^4.5.1",
     "fastify-type-provider-zod": "^1.1.9",
