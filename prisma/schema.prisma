@@ -13,6 +13,10 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+generator erd {
+  provider = "prisma-erd-generator"
+}
+
 model User {
   id           Int            @id @default(autoincrement()) @map("user_iduser")
   email        String         @unique @map("user_email")
