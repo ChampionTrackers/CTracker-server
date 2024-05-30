@@ -1,12 +1,12 @@
+import { verifyJwt } from '@/http/middlewares/verifyJWT';
 import { prisma } from '@/lib/prisma';
-import { verifyJwt } from '@/middlewares/verifyJWT';
-import { compareHash, generateHash } from '@/utils/hash';
+import { compareHash } from '@/utils/hash';
 import { FastifyInstance } from 'fastify';
 import { ZodTypeProvider } from 'fastify-type-provider-zod';
 import z from 'zod';
+import { ConflictError } from '../_errors/Conflict';
 import { NotFoundError } from '../_errors/NotFound';
 import { UnauthorizedError } from '../_errors/Unauthorized';
-import { ConflictError } from '../_errors/Conflict';
 
 export async function editUser(app: FastifyInstance) {
   app.withTypeProvider<ZodTypeProvider>().patch(

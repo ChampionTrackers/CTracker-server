@@ -1,27 +1,27 @@
+import fastifyCors from '@fastify/cors';
 import fastifyJwt from '@fastify/jwt';
 import fastifySwagger from '@fastify/swagger';
 import ScalarApiReference from '@scalar/fastify-api-reference';
-import fastifyCors from '@fastify/cors';
 import fastify from 'fastify';
 import {
-  jsonSchemaTransform,
-  serializerCompiler,
-  validatorCompiler,
+    jsonSchemaTransform,
+    serializerCompiler,
+    validatorCompiler,
 } from 'fastify-type-provider-zod';
 
-import { errorHandler } from './helpers/error-handler';
-import { createChampionship } from './routes/championships/create-championship';
-import { getChampionship } from './routes/championships/get-championship';
-import { getChampionshipTeams } from './routes/championships/get-championship-teams';
-import { getChampionshipsList } from './routes/championships/get-championships-list';
-import { createTeam } from './routes/teams/create-team';
-import { authenticateWithEmail } from './routes/users/authenticate-with-email';
-import { createUser } from './routes/users/create-user';
-import { getProfile } from './routes/users/get-profile';
-import { addTeamToChampionship } from './routes/championships/add-team-to-championship';
 import { env } from './env';
-import { editUser } from './routes/users/edit-user';
-import { changePassword } from './routes/users/change-password';
+import { errorHandler } from './helpers/error-handler';
+import { addTeamToChampionship } from './http/controllers/championships/add-team-to-championship';
+import { createChampionship } from './http/controllers/championships/create-championship';
+import { getChampionship } from './http/controllers/championships/get-championship';
+import { getChampionshipTeams } from './http/controllers/championships/get-championship-teams';
+import { getChampionshipsList } from './http/controllers/championships/get-championships-list';
+import { createTeam } from './http/controllers/teams/create-team';
+import { authenticateWithEmail } from './http/controllers/users/authenticate-with-email';
+import { changePassword } from './http/controllers/users/change-password';
+import { createUser } from './http/controllers/users/create-user';
+import { editUser } from './http/controllers/users/edit-user';
+import { getProfile } from './http/controllers/users/get-profile';
 
 const app = fastify();
 

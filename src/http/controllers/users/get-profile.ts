@@ -1,9 +1,9 @@
+import { verifyJwt } from '@/http/middlewares/verifyJWT';
 import { prisma } from '@/lib/prisma'
 import { FastifyInstance } from 'fastify'
 import { ZodTypeProvider } from 'fastify-type-provider-zod'
 import z from 'zod'
 import { NotFoundError } from '../_errors/NotFound'
-import { verifyJwt } from '@/middlewares/verifyJWT'
 
 export async function getProfile(app: FastifyInstance) {
     app.withTypeProvider<ZodTypeProvider>().get(
