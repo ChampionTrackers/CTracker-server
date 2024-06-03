@@ -1,10 +1,10 @@
+import { verifyJwt } from '@/http/middlewares/verifyJWT';
 import { prisma } from '@/lib/prisma';
 import { compareHash, generateHash } from '@/utils/hash';
 import { FastifyInstance } from 'fastify';
 import { ZodTypeProvider } from 'fastify-type-provider-zod';
 import { z } from 'zod';
 import { NotFoundError } from '../_errors/NotFound';
-import { verifyJwt } from '@/middlewares/verifyJWT';
 
 export async function changePassword(app: FastifyInstance) {
   app.withTypeProvider<ZodTypeProvider>().put(

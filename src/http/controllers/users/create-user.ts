@@ -1,9 +1,8 @@
 import { FastifyInstance } from 'fastify'
 import { ZodTypeProvider } from 'fastify-type-provider-zod'
 import z from 'zod'
-import { prisma } from '../../lib/prisma'
-import { generateHash } from '../../utils/hash'
-import { BadRequestError } from '../_errors/BadRequest'
+import { prisma } from '../../../lib/prisma'
+import { generateHash } from '../../../utils/hash'
 import { ConflictError } from '../_errors/Conflict'
 
 export async function createUser(app: FastifyInstance) {

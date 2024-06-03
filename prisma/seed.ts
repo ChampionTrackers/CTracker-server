@@ -1,7 +1,7 @@
+import { faker } from '@faker-js/faker'
 import { prisma } from '../src/lib/prisma'
-import { Prisma } from '@prisma/client'
-import { Faker, faker } from '@faker-js/faker'
 import { generateHash } from '../src/utils/hash'
+import { generateName } from './utils/nicknameGenerator';
 
 async function seed() {
     await prisma.teamChampionship.deleteMany()
@@ -20,7 +20,7 @@ async function seed() {
                 email: faker.internet.email(),
                 password: await generateHash('dev'),
                 name: faker.person.fullName(),
-                nickname: faker.string.alpha(10),
+                nickname: generateName(),
                 picture: faker.image.avatar(),
             },
         })

@@ -13,6 +13,10 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+generator erd {
+  provider = "prisma-erd-generator"
+}
+
 model User {
   id           Int            @id @default(autoincrement()) @map("user_iduser")
   email        String         @unique @map("user_email")
@@ -92,7 +96,7 @@ model Guess {
   id          Int          @id @default(autoincrement()) @map("guess_id")
   userId      Int          @map("user_iduser")
   teamScoreId Int          @map("ts_idteamscore")
-  outcome     GuessOutcome
+  outcome     GuessOutcome @map("guess_outcome")
 
   user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   teamScore TeamScore @relation(fields: [teamScoreId], references: [id], onDelete: Cascade)

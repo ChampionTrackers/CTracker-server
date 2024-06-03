@@ -3,42 +3,39 @@ import { FastifyInstance } from 'fastify'
 import { ZodTypeProvider } from 'fastify-type-provider-zod'
 import z from 'zod'
 import { NotFoundError } from '../_errors/NotFound'
-import { verifyJwt } from '@/middlewares/verifyJWT'
 
-export async function getProfile(app: FastifyInstance) {
+export async function getUser(app: FastifyInstance) {
     app.withTypeProvider<ZodTypeProvider>().get(
-        '/profile',
+        '/users/:userId',
         {
-            onRequest: [verifyJwt],
             schema: {
-                summary: 'Get your profile',
+                summary: 'Get an user',
                 tags: ['Auth'],
-                security: [{ JWT: [] }],
+                params: z.object({
+                    userId: z.coerce.number().int(),
+                }),
                 response: {
                     200: z.object({
-                            email: z.string().email(),
-                            name: z.string(),
+                        user: z.object({
                             nickname: z.string(),
                             picture: z.string().url().nullable(),
                             score: z.number().int(),
+                        })
                     }),
                 },
             },
-            
         },
         async (request, reply) => {
-            const { id } = request.user
+            const { userId } = request.params
 
             const user = await prisma.user.findUnique({
                 select: {
-                    email: true,
-                    name: true,
                     nickname: true,
                     picture: true,
                     score: true,
                 },
                 where: {
-                    id,
+                    id: userId,
                 }
             })
 
@@ -46,13 +43,11 @@ export async function getProfile(app: FastifyInstance) {
                 throw new NotFoundError("User not found")
             }
 
-            return reply.send({
-                email: user.email,
-                name: user.name,
+            return reply.send({ user: {
                 nickname: user.nickname,
                 picture: user.picture,
                 score: user.score
-            })
+            } })
         }
     )
 }
