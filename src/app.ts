@@ -4,9 +4,9 @@ import fastifySwagger from '@fastify/swagger';
 import ScalarApiReference from '@scalar/fastify-api-reference';
 import fastify from 'fastify';
 import {
-    jsonSchemaTransform,
-    serializerCompiler,
-    validatorCompiler,
+  jsonSchemaTransform,
+  serializerCompiler,
+  validatorCompiler,
 } from 'fastify-type-provider-zod';
 
 import { env } from './env';
@@ -22,6 +22,7 @@ import { changePassword } from './http/controllers/users/change-password';
 import { createUser } from './http/controllers/users/create-user';
 import { editUser } from './http/controllers/users/edit-user';
 import { getProfile } from './http/controllers/users/get-profile';
+import { getUser } from './http/controllers/users/get-user';
 
 const app = fastify();
 
@@ -88,6 +89,7 @@ app.register(editUser, { prefix: '/v1' });
 app.register(changePassword, { prefix: '/v1' });
 app.register(authenticateWithEmail, { prefix: '/v1' });
 app.register(getProfile, { prefix: '/v1' });
+app.register(getUser, { prefix: '/v1' });
 
 app.register(createTeam, { prefix: '/v1' });
 
