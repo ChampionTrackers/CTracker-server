@@ -31,7 +31,7 @@
     "@mermaid-js/mermaid-cli": "^10.9.1",
     "@testcontainers/postgresql": "^10.9.0",
     "@types/bcrypt": "^5.0.2",
-    "@types/node": "^20.12.12",
+    "@types/node": "^20.14.0",
     "@types/supertest": "^6.0.2",
     "@vitest/coverage-v8": "^1.6.0",
     "@vitest/ui": "^1.6.0",
