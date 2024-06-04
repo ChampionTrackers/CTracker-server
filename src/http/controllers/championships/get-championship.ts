@@ -18,7 +18,6 @@ export async function getChampionship(app: FastifyInstance) {
         response: {
           200: z.object({
             id: z.number().int(),
-            ownerId: z.number().int(),
             name: z.string().min(3),
             picture: z.string().url().nullable(),
             description: z.string().min(3),
@@ -26,6 +25,11 @@ export async function getChampionship(app: FastifyInstance) {
             createdAt: z.date(),
             teamsAmount: z.number().int(),
             game: z.string().min(3),
+            owner: z.object({
+              id: z.number().int(),
+              nickname: z.string(),
+              picture: z.string().url().nullable(),
+            }),
           }),
         },
       },
@@ -59,9 +63,23 @@ export async function getChampionship(app: FastifyInstance) {
         throw new NotFoundError('Championship not found');
       }
 
+      const owner = await prisma.user.findUnique({
+        select: {
+          id: true,
+          nickname: true,
+          picture: true,
+        },
+        where: {
+          id: championship.userId,
+        },
+      })
+
+      if (owner === null) {
+        throw new NotFoundError('Owner not found')
+      }
+
       return reply.send({
         id: championship.id,
-        ownerId: championship.userId,
         name: championship.name,
         picture: championship.picture,
         description: championship.description,
@@ -69,6 +87,11 @@ export async function getChampionship(app: FastifyInstance) {
         game: championship.game,
         createdAt: championship.createdAt,
         teamsAmount: championship._count.TeamChampionship,
+        owner: {
+          id: owner.id,
+          nickname: owner.nickname,
+          picture: owner.picture,
+        }
       });
     }
   );
