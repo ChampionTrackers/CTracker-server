@@ -15,6 +15,7 @@ import { addTeamToChampionship } from './http/controllers/championships/add-team
 import { createChampionship } from './http/controllers/championships/create-championship'
 import { createMatch } from './http/controllers/championships/create-match'
 import { getChampionship } from './http/controllers/championships/get-championship'
+import { getChampionshipMatches } from './http/controllers/championships/get-championship-matches'
 import { getChampionshipTeams } from './http/controllers/championships/get-championship-teams'
 import { getChampionshipsList } from './http/controllers/championships/get-championships-list'
 import { createTeam } from './http/controllers/teams/create-team'
@@ -95,12 +96,13 @@ app.register(getUser, { prefix: '/v1' })
 app.register(createTeam, { prefix: '/v1' })
 
 app.register(createChampionship, { prefix: '/v1' })
-app.register(addTeamToChampionship, { prefix: '/v1' })
-app.register(getChampionshipTeams, { prefix: '/v1' })
 app.register(getChampionship, { prefix: '/v1' })
 app.register(getChampionshipsList, { prefix: '/v1' })
-
+app.register(addTeamToChampionship, { prefix: '/v1' })
+app.register(getChampionshipTeams, { prefix: '/v1' })
+app.register(getChampionshipMatches, { prefix: '/v1' })
 app.register(createMatch, { prefix: '/v1' })
+
 app.setErrorHandler(errorHandler)
 
 export { app }
