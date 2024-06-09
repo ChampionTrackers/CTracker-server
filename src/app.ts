@@ -9,14 +9,14 @@ import {
   validatorCompiler,
 } from 'fastify-type-provider-zod'
 
-import { env } from './env'
+import { env } from './env/index'
 import { errorHandler } from './helpers/error-handler'
 import { addTeamToChampionship } from './http/controllers/championships/add-team-to-championship'
 import { createChampionship } from './http/controllers/championships/create-championship'
+import { createMatch } from './http/controllers/championships/create-match'
 import { getChampionship } from './http/controllers/championships/get-championship'
 import { getChampionshipTeams } from './http/controllers/championships/get-championship-teams'
 import { getChampionshipsList } from './http/controllers/championships/get-championships-list'
-import { createMatch } from './http/controllers/championships/create-match'
 import { createTeam } from './http/controllers/teams/create-team'
 import { authenticateWithEmail } from './http/controllers/users/authenticate-with-email'
 import { changePassword } from './http/controllers/users/change-password'
