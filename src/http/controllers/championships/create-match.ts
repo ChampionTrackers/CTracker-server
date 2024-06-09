@@ -8,12 +8,12 @@ import { UnauthorizedError } from '../_errors/Unauthorized'
 
 export async function createMatch(app: FastifyInstance) {
   app.withTypeProvider<ZodTypeProvider>().post(
-    '/championships/:id/matches',
+    '/championships/:championshipId/matches',
     {
       onRequest: (request, reply) => verifyJwt(request, reply),
       schema: {
         summary: 'Create a match',
-        tags: ['Match'],
+        tags: ['Championship'],
         security: [{ JWT: [] }],
         params: z.object({
           championshipId: z.coerce.number().int(),
