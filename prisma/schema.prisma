@@ -101,8 +101,8 @@ model Guess {
   teamScoreId Int @map("ts_idteamscore")
   guessCost   Int @map("guess_cost")
 
-  outcome       GuessOutcome       @default(PENDING) @map("guess_outcome")
-  lootCollected GuessLootCollected @default(NONE) @map("guess_lootCollected")
+  outcome       GuessOutcome @default(PENDING) @map("guess_outcome")
+  lootCollected Boolean      @default(false) @map("guess_lootCollected")
 
   createdAt DateTime  @default(now()) @map("guess_createdAt")
   user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -147,12 +147,6 @@ enum GuessOutcome {
   LOST
   DRAW
   CANCELLED
-}
-
-enum GuessLootCollected {
-  COLLECTED
-  NOT_COLLECTED
-  NONE
 }
 
 enum TeamScoreStatus {
