@@ -11,13 +11,14 @@ import {
 
 import { env } from './env/index'
 import { errorHandler } from './helpers/error-handler'
-import { addTeamToChampionship } from './http/controllers/championships/add-team-to-championship'
 import { createChampionship } from './http/controllers/championships/create-championship'
-import { createMatch } from './http/controllers/championships/create-match'
 import { getChampionship } from './http/controllers/championships/get-championship'
-import { getChampionshipMatches } from './http/controllers/championships/get-championship-matches'
-import { getChampionshipTeams } from './http/controllers/championships/get-championship-teams'
 import { getChampionshipsList } from './http/controllers/championships/get-championships-list'
+import { createMatch } from './http/controllers/championships/matches/create-match'
+import { getChampionshipMatches } from './http/controllers/championships/matches/get-championship-matches'
+import { addTeamToChampionship } from './http/controllers/championships/teams/add-team-to-championship'
+import { getChampionshipTeams } from './http/controllers/championships/teams/get-championship-teams'
+import { createGuess } from './http/controllers/guess/create-guess'
 import { createTeam } from './http/controllers/teams/create-team'
 import { authenticateWithEmail } from './http/controllers/users/authenticate-with-email'
 import { changePassword } from './http/controllers/users/change-password'
@@ -67,6 +68,11 @@ app.register(fastifySwagger, {
         description:
           'Endpoints relacionados à organização e gerenciamento de campeonatos. Inclui operações para criação, atualização, exclusão e listagem de campeonatos, bem como a gestão de participantes e resultados.',
       },
+      {
+        name: 'Guess',
+        description:
+          'Endpoints relacionados à criação e gerenciamento de palpites. Inclui operações para criação, atualização e listagem de palpites.',
+      },
     ],
   },
   transform: jsonSchemaTransform,
@@ -102,6 +108,8 @@ app.register(addTeamToChampionship, { prefix: '/v1' })
 app.register(getChampionshipTeams, { prefix: '/v1' })
 app.register(getChampionshipMatches, { prefix: '/v1' })
 app.register(createMatch, { prefix: '/v1' })
+
+app.register(createGuess, { prefix: '/v1' })
 
 app.setErrorHandler(errorHandler)
 
