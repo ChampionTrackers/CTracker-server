@@ -4,6 +4,7 @@ import { FastifyInstance } from 'fastify'
 import { ZodTypeProvider } from 'fastify-type-provider-zod'
 import z from 'zod'
 import { BadRequestError } from '../_errors/BadRequest'
+import { NotFoundError } from '../_errors/NotFound'
 
 export async function createGuess(app: FastifyInstance) {
   app.withTypeProvider<ZodTypeProvider>().post(
@@ -48,11 +49,11 @@ export async function createGuess(app: FastifyInstance) {
       ])
 
       if (!match) {
-        throw new BadRequestError('Match not found')
+        throw new NotFoundError('Match not found')
       }
 
       if (!team) {
-        throw new BadRequestError('Team not found')
+        throw new NotFoundError('Team not found')
       }
 
       const teamScore = await prisma.teamScore.findFirst({
@@ -63,7 +64,7 @@ export async function createGuess(app: FastifyInstance) {
       })
 
       if (!teamScore) {
-        throw new BadRequestError('Team score not found')
+        throw new NotFoundError('Team score not found')
       }
 
       const matchTeamScores = await prisma.teamScore.findMany({
