@@ -74,10 +74,6 @@ export async function getChampionshipMatches(app: FastifyInstance) {
             (team) => team.id === teamScores[1].teamId,
           )
 
-          if (!homeTeam || !awayTeam) {
-            throw new BadRequestError('Teams not found')
-          }
-
           return {
             id: match.id,
             homeTeam: {
