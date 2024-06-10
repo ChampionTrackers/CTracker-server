@@ -3,8 +3,8 @@ import { prisma } from '@/lib/prisma'
 import { FastifyInstance } from 'fastify'
 import { ZodTypeProvider } from 'fastify-type-provider-zod'
 import z from 'zod'
-import { BadRequestError } from '../_errors/BadRequest'
-import { UnauthorizedError } from '../_errors/Unauthorized'
+import { BadRequestError } from '../../_errors/BadRequest'
+import { UnauthorizedError } from '../../_errors/Unauthorized'
 
 export async function createMatch(app: FastifyInstance) {
   app.withTypeProvider<ZodTypeProvider>().post(

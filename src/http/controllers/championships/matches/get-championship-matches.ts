@@ -2,7 +2,7 @@ import { prisma } from '@/lib/prisma'
 import { FastifyInstance } from 'fastify'
 import { ZodTypeProvider } from 'fastify-type-provider-zod'
 import z from 'zod'
-import { BadRequestError } from '../_errors/BadRequest'
+import { BadRequestError } from '../../_errors/BadRequest'
 
 export async function getChampionshipMatches(app: FastifyInstance) {
   app.withTypeProvider<ZodTypeProvider>().get(
@@ -103,7 +103,7 @@ export async function getChampionshipMatches(app: FastifyInstance) {
         throw new BadRequestError('Matches not found')
       }
 
-      return reply.send(matchesWithScore.map((match) => match))
+      return reply.send(matchesWithScore)
     },
   )
 }
