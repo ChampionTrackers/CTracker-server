@@ -25,6 +25,8 @@ model User {
   nickname     String         @unique @map("user_nickname")
   picture      String?        @map("user_picture")
   score        Int            @default(0) @map("user_score")
+  balance      Int            @default(100) @map("user_balance")
+  createdAt    DateTime       @default(now()) @map("user_createdAt")
   Team         Team[]
   Championship Championship[]
   Guess        Guess[]
@@ -99,8 +101,7 @@ model Guess {
   teamScoreId Int @map("ts_idteamscore")
   guessCost   Int @map("guess_cost")
 
-  outcome       GuessOutcome       @map("guess_outcome")
-  prediction    GuessPrediction    @map("guess_prediction")
+  outcome       GuessOutcome       @default(PENDING) @map("guess_outcome")
   lootCollected GuessLootCollected @default(NONE) @map("guess_lootCollected")
 
   createdAt DateTime  @default(now()) @map("guess_createdAt")
@@ -146,11 +147,6 @@ enum GuessOutcome {
   LOST
   DRAW
   CANCELLED
-}
-
-enum GuessPrediction {
-  WIN
-  LOST
 }
 
 enum GuessLootCollected {
