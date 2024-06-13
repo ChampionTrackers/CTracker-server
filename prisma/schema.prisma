@@ -25,6 +25,8 @@ model User {
   nickname     String         @unique @map("user_nickname")
   picture      String?        @map("user_picture")
   score        Int            @default(0) @map("user_score")
+  balance      Int            @default(100) @map("user_balance")
+  createdAt    DateTime       @default(now()) @map("user_createdAt")
   Team         Team[]
   Championship Championship[]
   Guess        Guess[]
@@ -83,7 +85,8 @@ model TeamChampionship {
 model Match {
   id               Int         @id @default(autoincrement()) @map("mat_idmatch")
   championshipId   Int         @map("cha_idchampionship")
-  plannedStartTime DateTime    @default(now()) @map("mat_planned_start_time")
+  plannedStartTime DateTime    @default(now()) @map("mat_plannedstarttime")
+  createdAt        DateTime    @default(now()) @map("mat_createdAt")
   status           MatchStatus @default(SCHEDULED) @map("mat_status")
 
   championship Championship @relation(fields: [championshipId], references: [id])
@@ -93,11 +96,15 @@ model Match {
 }
 
 model Guess {
-  id          Int          @id @default(autoincrement()) @map("guess_id")
-  userId      Int          @map("user_iduser")
-  teamScoreId Int          @map("ts_idteamscore")
-  outcome     GuessOutcome @map("guess_outcome")
+  id          Int @id @default(autoincrement()) @map("guess_id")
+  userId      Int @map("user_iduser")
+  teamScoreId Int @map("ts_idteamscore")
+  guessCost   Int @map("guess_cost")
 
+  outcome       GuessOutcome @default(PENDING) @map("guess_outcome")
+  lootCollected Boolean      @default(false) @map("guess_lootCollected")
+
+  createdAt DateTime  @default(now()) @map("guess_createdAt")
   user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   teamScore TeamScore @relation(fields: [teamScoreId], references: [id], onDelete: Cascade)
 
@@ -105,10 +112,11 @@ model Guess {
 }
 
 model TeamScore {
-  id        Int @id @default(autoincrement()) @map("ts_idteamscore")
-  matchId   Int @map("mat_idmatch")
-  teamId    Int @map("team_idteam")
-  teamScore Int @default(0) @map("ts_teamscore")
+  id         Int             @id @default(autoincrement()) @map("ts_idteamscore")
+  matchId    Int             @map("mat_idmatch")
+  teamId     Int             @map("team_idteam")
+  teamScore  Int             @default(0) @map("ts_teamscore")
+  teamStatus TeamScoreStatus @default(NONE) @map("ts_teamstatus")
 
   team  Team    @relation(fields: [teamId], references: [id])
   match Match   @relation(fields: [matchId], references: [id])
@@ -134,8 +142,16 @@ enum MatchStatus {
 }
 
 enum GuessOutcome {
-  TEAM1_WIN
-  TEAM2_WIN
+  PENDING
+  WIN
+  LOST
   DRAW
   CANCELLED
+}
+
+enum TeamScoreStatus {
+  NONE
+  WON
+  LOST
+  DRAW
 }

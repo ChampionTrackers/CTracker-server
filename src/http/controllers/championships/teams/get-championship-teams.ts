@@ -1,9 +1,8 @@
-import { prisma } from '@/lib/prisma';
-import { FastifyInstance } from 'fastify';
-import { ZodTypeProvider } from 'fastify-type-provider-zod';
-import z from 'zod';
-import { NotFoundError } from '../_errors/NotFound';
-import { BadRequestError } from '../_errors/BadRequest';
+import { prisma } from '@/lib/prisma'
+import { FastifyInstance } from 'fastify'
+import { ZodTypeProvider } from 'fastify-type-provider-zod'
+import z from 'zod'
+import { NotFoundError } from '../../_errors/NotFound'
 
 export async function getChampionshipTeams(app: FastifyInstance) {
   app.withTypeProvider<ZodTypeProvider>().get(
@@ -24,22 +23,22 @@ export async function getChampionshipTeams(app: FastifyInstance) {
               victory: z.number().int(),
               defeat: z.number().int(),
               draw: z.number().int(),
-            })
+            }),
           ),
         },
       },
     },
     async (request, reply) => {
-      const { championshipId } = request.params;
+      const { championshipId } = request.params
 
       const findChampionship = await prisma.championship.findUnique({
         where: {
           id: championshipId,
         },
-      });
+      })
 
       if (findChampionship === null)
-        throw new NotFoundError("This championship don't exist");
+        throw new NotFoundError("This championship don't exist")
 
       const teams = await prisma.teamChampionship.findMany({
         select: {
@@ -57,9 +56,9 @@ export async function getChampionshipTeams(app: FastifyInstance) {
         where: {
           championshipId,
         },
-      });
+      })
 
-      if (teams === null) throw new NotFoundError('Teams not found');
+      if (teams === null) throw new NotFoundError('Teams not found')
 
       return reply.send(
         teams.map((team) => {
@@ -70,9 +69,9 @@ export async function getChampionshipTeams(app: FastifyInstance) {
             victory: team.victory,
             defeat: team.defeat,
             draw: team.draw,
-          };
-        })
-      );
-    }
-  );
+          }
+        }),
+      )
+    },
+  )
 }
