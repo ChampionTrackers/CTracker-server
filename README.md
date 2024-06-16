@@ -63,7 +63,13 @@ $ npm run dev
 Subindo o banco de dados utilizando docker
 
 ```bash
-docker run -d -e POSTGRES_DB=ctracker -e POSTGRES_PASSWORD=dev -e POSTGRES_USER=postgres -p "5432:5432" postgres
+docker run -d \
+  --name my-postgres \
+  -e POSTGRES_USER=postgres \
+  -e POSTGRES_PASSWORD=postgres \
+  -e POSTGRES_DB=ctracker \
+  -p 5432:5432 \
+  postgres:alpine
 ```
 
 URL de conexão com o banco de dados
