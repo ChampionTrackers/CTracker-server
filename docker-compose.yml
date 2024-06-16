@@ -35,10 +35,8 @@ services:
       context: .
       dockerfile: Dockerfile
     # restart: on-failure
-    environment:
-      DATABASE_URL: postgres://postgres:postgres@db:5432/ctracker
-      JWT_SECRET: secret
-      NODE_ENV: development
+    env_file:
+      - stack.env
     volumes:
       - .:/usr/src/app
     # depends_on:
