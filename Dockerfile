@@ -2,7 +2,7 @@
 FROM node:20-alpine AS build
 
 # Diretório de trabalho dentro do container
-WORKDIR /usr/src/backend
+WORKDIR /usr/src/app
 
 # Copie o package.json e o package-lock.json
 COPY package*.json ./
@@ -20,16 +20,17 @@ RUN npm run build
 FROM node:20-alpine
 
 # Diretório de trabalho dentro do container
-WORKDIR /usr/src/backend
+WORKDIR /usr/src/app
 
 # Copie as dependências instaladas e o código compilado da etapa anterior
-COPY --from=build /usr/src/backend/node_modules ./node_modules
-COPY --from=build /usr/src/backend/dist ./dist
-COPY --from=build /usr/src/backend/package*.json ./
-COPY wait-for-it.sh /usr/src/backend/wait-for-it.sh
+COPY --from=build /usr/src/app/node_modules ./node_modules
+COPY --from=build /usr/src/app/prisma ./prisma
+COPY --from=build /usr/src/app/dist ./dist
+COPY --from=build /usr/src/app/package*.json ./
+# COPY wait-for-it.sh /usr/src/app/wait-for-it.sh
 
 # Dê permissão de execução ao script wait-for-it.sh
-RUN chmod +x /usr/src/backend/wait-for-it.sh
+# RUN chmod +x /usr/src/backend/wait-for-it.sh
 
 # Exponha a porta que a aplicação irá usar
 EXPOSE 3333
