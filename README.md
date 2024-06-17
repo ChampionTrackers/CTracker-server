@@ -72,10 +72,16 @@ docker run -d \
   postgres:alpine
 ```
 
+ou
+
+```bash
+docker-compose -f docker-compose.dev.yml up -d
+```
+
 URL de conexão com o banco de dados
 
 ```bash
-DATABASE_URL="postgresql://postgres:dev@localhost:5432/ctracker?schema=public"
+DATABASE_URL="postgresql://postgres:postgres@localhost:5432/ctracker?schema=public"
 ```
 
 <!-- ## 🛠 Tecnologias
