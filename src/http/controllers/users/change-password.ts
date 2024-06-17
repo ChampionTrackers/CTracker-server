@@ -1,10 +1,10 @@
-import { verifyJwt } from '@/http/middlewares/verifyJWT';
-import { prisma } from '@/lib/prisma';
-import { compareHash, generateHash } from '@/utils/hash';
-import { FastifyInstance } from 'fastify';
-import { ZodTypeProvider } from 'fastify-type-provider-zod';
-import { z } from 'zod';
-import { NotFoundError } from '../_errors/NotFound';
+import { verifyJwt } from '@/http/middlewares/verifyJWT'
+import { prisma } from '@/lib/prisma'
+import { compareHash, generateHash } from '@/utils/hash'
+import { FastifyInstance } from 'fastify'
+import { ZodTypeProvider } from 'fastify-type-provider-zod'
+import { z } from 'zod'
+import { NotFoundError } from '../_errors/NotFound'
 
 export async function changePassword(app: FastifyInstance) {
   app.withTypeProvider<ZodTypeProvider>().put(
@@ -20,13 +20,13 @@ export async function changePassword(app: FastifyInstance) {
           newPassword: z.string().min(8),
         }),
         response: {
-          204: z.null(),
+          200: z.null(),
         },
       },
     },
     async (request, reply) => {
-      const userId = request.user.id;
-      const { password, newPassword } = request.body;
+      const userId = request.user.id
+      const { password, newPassword } = request.body
 
       const userPassword = await prisma.user.findUnique({
         where: {
@@ -35,19 +35,19 @@ export async function changePassword(app: FastifyInstance) {
         select: {
           password: true,
         },
-      });
+      })
 
       if (userPassword === null) {
-        throw new NotFoundError('User not found');
+        throw new NotFoundError('User not found')
       }
 
-      const comparePassword = await compareHash(password, userPassword.password);
+      const comparePassword = await compareHash(password, userPassword.password)
 
       if (!comparePassword) {
-        throw new NotFoundError('Invalid password');
+        throw new NotFoundError('Invalid password')
       }
 
-      const hashedPassword = await generateHash(newPassword);
+      const hashedPassword = await generateHash(newPassword)
 
       await prisma.user.update({
         where: {
@@ -56,9 +56,9 @@ export async function changePassword(app: FastifyInstance) {
         data: {
           password: hashedPassword,
         },
-      });
+      })
 
-      reply.status(204).send();
-    }
-  );
+      reply.status(204).send()
+    },
+  )
 }

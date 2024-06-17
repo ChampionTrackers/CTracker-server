@@ -18,20 +18,46 @@ datasource db {
 // }
 
 model User {
-  id           Int            @id @default(autoincrement()) @map("user_iduser")
-  email        String         @unique @map("user_email")
-  password     String         @map("user_password")
-  name         String         @map("user_name")
-  nickname     String         @unique @map("user_nickname")
-  picture      String?        @map("user_picture")
-  score        Int            @default(0) @map("user_score")
-  balance      Int            @default(100) @map("user_balance")
-  createdAt    DateTime       @default(now()) @map("user_createdAt")
-  Team         Team[]
-  Championship Championship[]
-  Guess        Guess[]
+  id                        Int                         @id @default(autoincrement()) @map("user_iduser")
+  email                     String                      @unique @map("user_email")
+  password                  String                      @map("user_password")
+  name                      String                      @map("user_name")
+  nickname                  String                      @unique @map("user_nickname")
+  picture                   String?                     @map("user_picture")
+  score                     Int                         @default(0) @map("user_score")
+  balance                   Int                         @default(100) @map("user_balance")
+  createdAt                 DateTime                    @default(now()) @map("user_createdAt")
+  Team                      Team[]
+  Championship              Championship[]
+  Guess                     Guess[]
+  UserFollowingChampionship UserFollowingChampionship[]
+  UserFollowingTeam         UserFollowingTeam[]
+  ChampionshipComments      ChampionshipComments[]
 
   @@map("tb_user")
+}
+
+model UserFollowingChampionship {
+  userId         Int      @map("user_iduser")
+  championshipId Int      @map("cha_idchampionship")
+  createdAt      DateTime @default(now()) @map("ufc_createdAt")
+
+  user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  championship Championship @relation(fields: [championshipId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, championshipId])
+  @@map("tb_user_following_championship")
+}
+
+model UserFollowingTeam {
+  userId Int @map("user_iduser")
+  teamId Int @map("team_idteam")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  team Team @relation(fields: [teamId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, teamId])
+  @@map("tb_user_following_team")
 }
 
 model Team {
@@ -43,9 +69,10 @@ model Team {
   maxPlayers  Int     @map("team_maxPlayers")
   score       Int     @default(0) @map("team_score")
 
-  user             User               @relation(fields: [userId], references: [id], onDelete: Restrict)
-  TeamChampionship TeamChampionship[]
-  TeamScore        TeamScore[]
+  user              User                @relation(fields: [userId], references: [id], onDelete: Restrict)
+  TeamChampionship  TeamChampionship[]
+  TeamScore         TeamScore[]
+  UserFollowingTeam UserFollowingTeam[]
 
   @@map("tb_team")
 }
@@ -61,11 +88,26 @@ model Championship {
   type        ChampionshipType   @map("cha_type")
   createdAt   DateTime           @default(now()) @map("cha_createdAt")
 
-  user             User               @relation(fields: [userId], references: [id], onDelete: Restrict)
-  TeamChampionship TeamChampionship[]
-  Match            Match[]
+  user                      User                        @relation(fields: [userId], references: [id], onDelete: Restrict)
+  TeamChampionship          TeamChampionship[]
+  Match                     Match[]
+  UserFollowingChampionship UserFollowingChampionship[]
+  ChampionshipComments      ChampionshipComments[]
 
   @@map("tb_championship")
+}
+
+model ChampionshipComments {
+  id             Int      @id @default(autoincrement()) @map("cc_idcomment")
+  userId         Int      @map("user_iduser")
+  championshipId Int      @map("cha_idchampionship")
+  comment        String   @map("cc_comment")
+  createdAt      DateTime @default(now()) @map("cc_createdAt")
+
+  user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  championship Championship @relation(fields: [championshipId], references: [id], onDelete: Cascade)
+
+  @@map("tb_championship_comments")
 }
 
 model TeamChampionship {
@@ -96,15 +138,15 @@ model Match {
 }
 
 model Guess {
-  id          Int @id @default(autoincrement()) @map("guess_id")
+  id          Int @id @default(autoincrement()) @map("ges_idguess")
   userId      Int @map("user_iduser")
   teamScoreId Int @map("ts_idteamscore")
-  guessCost   Int @map("guess_cost")
+  guessCost   Int @map("ges_cost")
 
-  outcome       GuessOutcome @default(PENDING) @map("guess_outcome")
-  lootCollected Boolean      @default(false) @map("guess_lootCollected")
+  outcome       GuessOutcome @default(PENDING) @map("ges_outcome")
+  // lootCollected Boolean      @default(false) @map("ges_lootCollected")
 
-  createdAt DateTime  @default(now()) @map("guess_createdAt")
+  createdAt DateTime  @default(now()) @map("ges_createdAt")
   user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   teamScore TeamScore @relation(fields: [teamScoreId], references: [id], onDelete: Cascade)
 
@@ -118,8 +160,8 @@ model TeamScore {
   teamScore  Int             @default(0) @map("ts_teamscore")
   teamStatus TeamScoreStatus @default(NONE) @map("ts_teamstatus")
 
-  team  Team    @relation(fields: [teamId], references: [id])
-  match Match   @relation(fields: [matchId], references: [id])
+  team  Team    @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  match Match   @relation(fields: [matchId], references: [id], onDelete: Cascade)
   Guess Guess[]
 
   @@map("tb_team_score")

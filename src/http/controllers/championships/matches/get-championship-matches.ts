@@ -49,6 +49,9 @@ export async function getChampionshipMatches(app: FastifyInstance) {
         where: {
           championshipId,
         },
+        orderBy: {
+          plannedStartTime: 'asc',
+        },
       })
 
       const matchesWithScore = await Promise.all(

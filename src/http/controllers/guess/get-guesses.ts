@@ -24,7 +24,6 @@ export async function getGuesses(app: FastifyInstance) {
               }),
               guessCost: z.number().int(),
               outcome: z.enum(['PENDING', 'WIN', 'LOST', 'DRAW', 'CANCELLED']),
-              lootCollected: z.boolean(),
               createdAt: z.date(),
             }),
           ),
@@ -37,6 +36,9 @@ export async function getGuesses(app: FastifyInstance) {
       const guesses = await prisma.guess.findMany({
         where: {
           userId,
+        },
+        orderBy: {
+          createdAt: 'desc',
         },
       })
 
@@ -83,7 +85,6 @@ export async function getGuesses(app: FastifyInstance) {
             },
             guessCost: guess.guessCost,
             outcome: guess.outcome,
-            lootCollected: guess.lootCollected,
             createdAt: guess.createdAt,
           }
         }),
