@@ -43,6 +43,8 @@ services:
     #   - db
     ports:
       - '3333:3333'
+    networks:
+      - docker_proxy
     command: >
       sh -c "
       npm install &&
@@ -50,6 +52,10 @@ services:
       npm run build &&
       npm run start
       "
+
+networks:
+  docker_proxy:
+    external: true
 
 # volumes:
 #   postgres_data:
