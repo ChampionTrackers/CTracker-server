@@ -144,7 +144,7 @@ model Guess {
   guessCost   Int @map("ges_cost")
 
   outcome       GuessOutcome @default(PENDING) @map("ges_outcome")
-  lootCollected Boolean      @default(false) @map("ges_lootCollected")
+  // lootCollected Boolean      @default(false) @map("ges_lootCollected")
 
   createdAt DateTime  @default(now()) @map("ges_createdAt")
   user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
