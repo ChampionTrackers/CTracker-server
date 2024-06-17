@@ -16,9 +16,11 @@ import { getChampionship } from './http/controllers/championships/get-championsh
 import { getChampionshipsList } from './http/controllers/championships/get-championships-list'
 import { createMatch } from './http/controllers/championships/matches/create-match'
 import { getChampionshipMatches } from './http/controllers/championships/matches/get-championship-matches'
+import { updateMatchResult } from './http/controllers/championships/matches/update-match-result'
 import { addTeamToChampionship } from './http/controllers/championships/teams/add-team-to-championship'
 import { getChampionshipTeams } from './http/controllers/championships/teams/get-championship-teams'
 import { createGuess } from './http/controllers/guess/create-guess'
+import { getGuesses } from './http/controllers/guess/get-guesses'
 import { createTeam } from './http/controllers/teams/create-team'
 import { authenticateWithEmail } from './http/controllers/users/authenticate-with-email'
 import { changePassword } from './http/controllers/users/change-password'
@@ -26,7 +28,6 @@ import { createUser } from './http/controllers/users/create-user'
 import { editUser } from './http/controllers/users/edit-user'
 import { getProfile } from './http/controllers/users/get-profile'
 import { getUser } from './http/controllers/users/get-user'
-import { getGuesses } from './http/controllers/guess/get-guesses'
 
 const app = fastify()
 
@@ -42,6 +43,20 @@ app.register(fastifySwagger, {
         'Esta é a documentação da API do Champions Tracker, que fornece funcionalidades para criação de campeonatos, equipes, jogadores e o gerenciamento como um todo. Aqui você encontrará detalhes sobre os endpoints disponíveis, parâmetros aceitos e os formatos de resposta esperados.\n\nUtilize este documento para entender como integrar e interagir com nossa API de maneira eficaz.\n\n### Funcionalidades Principais\n- **Controle de Campeonatos**:  O organizador poderá criar editar e controlar os campeonatos\n- **Controle de Equipes**: Os usuários poderão criar suas próprias equipes para que possam participar dos campeonatos\n- **Visualização de Campeonatos**: Os usuários poderão visualizar os campeonatos, suas informações e as equipes cadastradas',
       version: '1.0.0',
     },
+    servers: [
+      {
+        url: 'https://ctracker-server.onrender.com',
+        description: 'Render server (production)',
+      },
+      {
+        url: 'http://144.22.40.168:3333',
+        description: 'Oracle Cloud server (production)',
+      },
+      {
+        url: 'http://localhost:3333',
+        description: 'Development server (local)',
+      },
+    ],
     components: {
       securitySchemes: {
         JWT: {
@@ -109,6 +124,7 @@ app.register(addTeamToChampionship, { prefix: '/v1' })
 app.register(getChampionshipTeams, { prefix: '/v1' })
 app.register(getChampionshipMatches, { prefix: '/v1' })
 app.register(createMatch, { prefix: '/v1' })
+app.register(updateMatchResult, { prefix: '/v1' })
 
 app.register(createGuess, { prefix: '/v1' })
 app.register(getGuesses, { prefix: '/v1' })
