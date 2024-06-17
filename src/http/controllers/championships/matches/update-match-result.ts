@@ -24,7 +24,7 @@ export async function updateMatchResult(app: FastifyInstance) {
           score: z.number().int(),
         }),
         response: {
-          204: z.null(),
+          200: z.null(),
         },
       },
     },

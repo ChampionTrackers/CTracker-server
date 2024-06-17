@@ -1,12 +1,12 @@
-import { verifyJwt } from '@/http/middlewares/verifyJWT';
-import { prisma } from '@/lib/prisma';
-import { compareHash } from '@/utils/hash';
-import { FastifyInstance } from 'fastify';
-import { ZodTypeProvider } from 'fastify-type-provider-zod';
-import z from 'zod';
-import { ConflictError } from '../_errors/Conflict';
-import { NotFoundError } from '../_errors/NotFound';
-import { UnauthorizedError } from '../_errors/Unauthorized';
+import { verifyJwt } from '@/http/middlewares/verifyJWT'
+import { prisma } from '@/lib/prisma'
+import { compareHash } from '@/utils/hash'
+import { FastifyInstance } from 'fastify'
+import { ZodTypeProvider } from 'fastify-type-provider-zod'
+import z from 'zod'
+import { ConflictError } from '../_errors/Conflict'
+import { NotFoundError } from '../_errors/NotFound'
+import { UnauthorizedError } from '../_errors/Unauthorized'
 
 export async function editUser(app: FastifyInstance) {
   app.withTypeProvider<ZodTypeProvider>().patch(
@@ -27,7 +27,7 @@ export async function editUser(app: FastifyInstance) {
               .max(20)
               .refine(
                 (string) => !string.includes(' '),
-                'Nickname should not have spaces'
+                'Nickname should not have spaces',
               )
               .optional(),
             picture: z.string().url().optional(),
@@ -35,14 +35,14 @@ export async function editUser(app: FastifyInstance) {
           password: z.string().min(8),
         }),
         response: {
-          204: z.null(),
+          200: z.null(),
         },
       },
     },
     async (request, reply) => {
-      const userId = request.user.id;
-      const data = request.body.data;
-      const password = request.body.password;
+      const userId = request.user.id
+      const data = request.body.data
+      const password = request.body.password
 
       const userPassword = await prisma.user.findUnique({
         where: {
@@ -51,19 +51,16 @@ export async function editUser(app: FastifyInstance) {
         select: {
           password: true,
         },
-      });
+      })
 
       if (userPassword === null) {
-        throw new NotFoundError('User not found');
+        throw new NotFoundError('User not found')
       }
 
-      const passwordCompare = await compareHash(
-        password,
-        userPassword.password
-      );
+      const passwordCompare = await compareHash(password, userPassword.password)
 
       if (!passwordCompare) {
-        throw new UnauthorizedError('Wrong Password');
+        throw new UnauthorizedError('Wrong Password')
       }
 
       if (data.nickname) {
@@ -71,10 +68,10 @@ export async function editUser(app: FastifyInstance) {
           where: {
             nickname: data.nickname,
           },
-        });
+        })
 
         if (findNickname) {
-          throw new ConflictError('Nickname already exists');
+          throw new ConflictError('Nickname already exists')
         }
       }
 
@@ -83,10 +80,10 @@ export async function editUser(app: FastifyInstance) {
           where: {
             email: data.email,
           },
-        });
+        })
 
         if (findEmail) {
-          throw new ConflictError('Email already exists');
+          throw new ConflictError('Email already exists')
         }
       }
 
@@ -95,9 +92,9 @@ export async function editUser(app: FastifyInstance) {
           id: userId,
         },
         data,
-      });
+      })
 
-      return reply.status(204).send();
-    }
-  );
+      return reply.status(204).send()
+    },
+  )
 }
