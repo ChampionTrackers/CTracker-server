@@ -28,6 +28,7 @@ import { createUser } from './http/controllers/users/create-user'
 import { editUser } from './http/controllers/users/edit-user'
 import { getProfile } from './http/controllers/users/get-profile'
 import { getUser } from './http/controllers/users/get-user'
+import { updateMatchStatus } from './http/controllers/championships/matches/update-match-status'
 
 const app = fastify()
 
@@ -125,6 +126,7 @@ app.register(getChampionshipTeams, { prefix: '/v1' })
 app.register(getChampionshipMatches, { prefix: '/v1' })
 app.register(createMatch, { prefix: '/v1' })
 app.register(updateMatchResult, { prefix: '/v1' })
+app.register(updateMatchStatus, { prefix: '/v1' })
 
 app.register(createGuess, { prefix: '/v1' })
 app.register(getGuesses, { prefix: '/v1' })
