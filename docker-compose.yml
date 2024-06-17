@@ -30,7 +30,7 @@ services:
   #   depends_on: 
   #     - db
 
-  ctracker-backend:
+  backend:
     build:
       context: .
       dockerfile: Dockerfile
