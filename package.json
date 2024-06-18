@@ -10,12 +10,10 @@
     "db:migrate": "prisma migrate dev",
     "db:studio": "prisma studio",
     "db:seed": "prisma db seed",
-    "db:deploy": "prisma migrate deploy && prisma generate",
+    "db:generate": "prisma generate",
+    "db:deploy": "prisma migrate deploy",
     "lets-code": "docker compose up -d && npm run dev",
-    "test:e2e": "vitest run --dir src/http/controllers",
-    "test:e2e:watch": "vitest --dir src/http/controllers",
-    "test:coverage": "vitest run --coverage",
-    "test:ui": "vitest --ui"
+    "start:migrate": "npm run db:deploy && npm run start"
   },
   "engines": {
     "node": ">=16 <22"
