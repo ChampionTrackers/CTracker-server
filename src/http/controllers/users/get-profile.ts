@@ -22,6 +22,11 @@ export async function getProfile(app: FastifyInstance) {
             picture: z.string().url().nullable(),
             score: z.number().int(),
             balance: z.number().int(),
+            highestGuess: z.number().int(),
+            totalEarnings: z.number().int(),
+            totalLosses: z.number().int(),
+            lastTeamGuessedAt: z.string(),
+            totalGuesses: z.number().int(),
           }),
         },
       },
@@ -29,17 +34,78 @@ export async function getProfile(app: FastifyInstance) {
     async (request, reply) => {
       const { id } = request.user
 
-      const user = await prisma.user.findUnique({
-        select: {
-          email: true,
-          name: true,
-          nickname: true,
-          picture: true,
-          score: true,
-          balance: true,
-        },
+      const [
+        user,
+        highestGuess,
+        totalEarnings,
+        totalLosses,
+        totalGuesses,
+        lastGuess,
+      ] = await Promise.all([
+        prisma.user.findUnique({
+          select: {
+            email: true,
+            name: true,
+            nickname: true,
+            picture: true,
+            score: true,
+            balance: true,
+          },
+          where: {
+            id,
+          },
+        }),
+        prisma.guess.findFirst({
+          select: {
+            guessCost: true,
+          },
+          where: {
+            userId: id,
+          },
+          orderBy: {
+            guessCost: 'desc',
+          },
+        }),
+        prisma.guess.aggregate({
+          _sum: {
+            guessCost: true,
+          },
+          where: {
+            userId: id,
+            outcome: 'WIN',
+          },
+        }),
+        prisma.guess.aggregate({
+          _sum: {
+            guessCost: true,
+          },
+          where: {
+            userId: id,
+            outcome: 'LOST',
+          },
+        }),
+        prisma.guess.count({
+          where: {
+            userId: id,
+          },
+        }),
+        prisma.guess.findFirst({
+          where: {
+            userId: id,
+          },
+          orderBy: {
+            createdAt: 'desc',
+          },
+        }),
+      ])
+
+      const lastTeamGuessedAt = await prisma.team.findFirst({
         where: {
-          id,
+          TeamScore: {
+            some: {
+              id: lastGuess?.teamScoreId,
+            },
+          },
         },
       })
 
@@ -54,6 +120,11 @@ export async function getProfile(app: FastifyInstance) {
         picture: user.picture,
         score: user.score,
         balance: user.balance,
+        highestGuess: highestGuess?.guessCost ?? 0,
+        totalEarnings: totalEarnings._sum.guessCost ?? 0,
+        totalLosses: totalLosses._sum.guessCost ?? 0,
+        lastTeamGuessedAt: lastTeamGuessedAt?.name ?? 'Never',
+        totalGuesses,
       })
     },
   )
