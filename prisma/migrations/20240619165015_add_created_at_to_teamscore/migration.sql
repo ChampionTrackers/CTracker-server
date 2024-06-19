@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "tb_team_score" ADD COLUMN     "ts_createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP;
