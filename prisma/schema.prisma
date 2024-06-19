@@ -116,6 +116,7 @@ model TeamChampionship {
   victory        Int @default(0) @map("tc_victory")
   defeat         Int @default(0) @map("tc_defeat")
   draw           Int @default(0) @map("tc_draw")
+  createdAt      DateTime @default(now()) @map("tc_createdAt")
 
   team         Team         @relation(fields: [teamId], references: [id], onDelete: Restrict)
   championship Championship @relation(fields: [championshipId], references: [id], onDelete: Restrict)
@@ -159,12 +160,14 @@ model TeamScore {
   teamId     Int             @map("team_idteam")
   teamScore  Int             @default(0) @map("ts_teamscore")
   teamStatus TeamScoreStatus @default(NONE) @map("ts_teamstatus")
+  createdAt  DateTime        @default(now()) @map("ts_createdAt")
 
   team  Team    @relation(fields: [teamId], references: [id], onDelete: Cascade)
   match Match   @relation(fields: [matchId], references: [id], onDelete: Cascade)
   Guess Guess[]
 
   @@map("tb_team_score")
+  @@unique([matchId, teamId])
 }
 
 enum ChampionshipType {

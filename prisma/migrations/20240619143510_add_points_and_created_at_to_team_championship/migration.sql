@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "tb_team_championship" ADD COLUMN     "tc_createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+ADD COLUMN     "tc_points" INTEGER NOT NULL DEFAULT 0;

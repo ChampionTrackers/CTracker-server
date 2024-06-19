@@ -87,12 +87,39 @@ export async function updateMatchStatus(app: FastifyInstance) {
           },
         })
 
+        const winningTeams = highestScoreTeamScores.map(
+          (teamScore) => teamScore.teamId,
+        )
+
         const lostGuesses = await prisma.guess.findMany({
           where: {
             teamScoreId: {
               in: teamScores.map((teamScore) => teamScore.id),
               notIn: highestScoreTeamScores.map((teamScore) => teamScore.id),
             },
+          },
+        })
+
+        const winningTeamChampionships = await prisma.teamChampionship.findMany(
+          {
+            where: {
+              teamId: {
+                in: winningTeams,
+              },
+              championshipId,
+            },
+          },
+        )
+
+        const losingTeams = teamScores
+          .filter((teamScore) => !winningTeams.includes(teamScore.teamId))
+          .map((teamScore) => teamScore.teamId)
+        const losingTeamChampionships = await prisma.teamChampionship.findMany({
+          where: {
+            teamId: {
+              in: losingTeams,
+            },
+            championshipId,
           },
         })
 
@@ -108,6 +135,7 @@ export async function updateMatchStatus(app: FastifyInstance) {
                 outcome: 'DRAW',
               },
             }),
+
             winGuesses.map(async (guess) => {
               await prisma.user.update({
                 where: {
@@ -117,6 +145,36 @@ export async function updateMatchStatus(app: FastifyInstance) {
                   balance: {
                     increment: (guess.guessCost * 2) / 2,
                   },
+                },
+              })
+            }),
+
+            winningTeamChampionships.map(async (teamChampionship) => {
+              await prisma.teamChampionship.update({
+                where: {
+                  teamId_championshipId: {
+                    teamId: teamChampionship.teamId,
+                    championshipId: teamChampionship.championshipId,
+                  },
+                },
+                data: {
+                  draw: {
+                    increment: 1,
+                  },
+                },
+              })
+            }),
+
+            winningTeams.map(async (teamId) => {
+              await prisma.teamScore.update({
+                where: {
+                  matchId_teamId: {
+                    matchId,
+                    teamId,
+                  },
+                },
+                data: {
+                  teamStatus: 'DRAW',
                 },
               })
             }),
@@ -136,6 +194,7 @@ export async function updateMatchStatus(app: FastifyInstance) {
               outcome: 'WIN',
             },
           }),
+
           prisma.guess.updateMany({
             where: {
               id: {
@@ -146,6 +205,7 @@ export async function updateMatchStatus(app: FastifyInstance) {
               outcome: 'LOST',
             },
           }),
+
           winGuesses.map(async (guess) => {
             await prisma.user.update({
               where: {
@@ -155,6 +215,66 @@ export async function updateMatchStatus(app: FastifyInstance) {
                 balance: {
                   increment: guess.guessCost * 2,
                 },
+              },
+            })
+          }),
+
+          winningTeamChampionships.map(async (teamChampionship) => {
+            await prisma.teamChampionship.update({
+              where: {
+                teamId_championshipId: {
+                  teamId: teamChampionship.teamId,
+                  championshipId: teamChampionship.championshipId,
+                },
+              },
+              data: {
+                victory: {
+                  increment: 1,
+                },
+              },
+            })
+          }),
+
+          winningTeams.map(async (teamId) => {
+            await prisma.teamScore.update({
+              where: {
+                matchId_teamId: {
+                  matchId,
+                  teamId,
+                },
+              },
+              data: {
+                teamStatus: 'WON',
+              },
+            })
+          }),
+
+          losingTeamChampionships.map(async (teamChampionship) => {
+            await prisma.teamChampionship.update({
+              where: {
+                teamId_championshipId: {
+                  teamId: teamChampionship.teamId,
+                  championshipId: teamChampionship.championshipId,
+                },
+              },
+              data: {
+                defeat: {
+                  increment: 1,
+                },
+              },
+            })
+          }),
+
+          losingTeams.map(async (teamId) => {
+            await prisma.teamScore.update({
+              where: {
+                matchId_teamId: {
+                  matchId,
+                  teamId,
+                },
+              },
+              data: {
+                teamStatus: 'LOST',
               },
             })
           }),
