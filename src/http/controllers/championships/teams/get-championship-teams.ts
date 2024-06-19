@@ -56,6 +56,9 @@ export async function getChampionshipTeams(app: FastifyInstance) {
         where: {
           championshipId,
         },
+        orderBy: {
+          createdAt: 'asc',
+        },
       })
 
       if (teams === null) throw new NotFoundError('Teams not found')
