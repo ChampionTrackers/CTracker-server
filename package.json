@@ -35,7 +35,7 @@
     "prisma": "^5.15.0",
     "prisma-erd-generator": "^1.11.2",
     "tsc": "^2.0.4",
-    "tsx": "^4.13.1",
+    "tsx": "^4.16.0",
     "typescript": "^5.4.5"
   },
   "dependencies": {
